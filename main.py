@@ -125,16 +125,20 @@ def edit_contact():
             data[index] = {"interforma": interforma, "fio": fio, "sex": sex, "dob": dob, "text": text}
             display_data(listbox, data)
 
+current_directory = os.path.dirname(os.path.abspath(__file__))
+
 # Создаем главное окно
 root = tk.Tk()
 root.title("'Контакт+' версия 0.1")
 root.geometry("800x700")  # Размер окна увеличен на 10%
 
 # Изменение значка программы
-root.iconbitmap("C:/Users/asd/Desktop/politeh/proga/сдать/app/your_icon.ico")
+icon_path = os.path.join(current_directory, "your_icon.ico")
+root.iconbitmap(icon_path)
 
 # Загружаем изображение фона
-background_image = Image.open("background.jpg")
+background_image_path = os.path.join(current_directory, "background.jpg")
+background_image = Image.open(background_image_path)
 background_photo = ImageTk.PhotoImage(background_image)
 
 # Создаем Canvas для отображения фона
