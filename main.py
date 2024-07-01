@@ -26,18 +26,25 @@ def load_data_from_csv(filepath):
         messagebox.showerror("Ошибка", str(e))
     return data
 
-# Функция для отображения данных в listbox
 def display_data(listbox, data):
     listbox.delete(0, tk.END)  # Очищаем список перед добавлением новых данных
-    for item in data:
-        listbox.insert(tk.END, f"{item['interforma']}")
+    added_contacts = set()
+    global sorted_data  # Делаем sorted_data глобальной, чтобы использовать её в других функциях
+    data_with_fio = [item for item in data if item["fio"]]
+    data_without_fio = [item for item in data if not item["fio"]]
+    sorted_data = data_with_fio + data_without_fio
+    for item in sorted_data:
+        display_text = f"{item['fio']} ({item['interforma']})" if item["fio"] else item["interforma"]
+        if display_text not in added_contacts:
+            listbox.insert(tk.END, display_text)
+            added_contacts.add(display_text)
 
-# Функция для отображения информации в полях ввода
+
 def show_contact_details(event):
     selected_contact = listbox.curselection()
     if selected_contact:
         index = selected_contact[0]
-        contact = data[index]
+        contact = sorted_data[index]  # Отображаемый контакт
 
         interforma_entry.delete(0, tk.END)
         interforma_entry.insert(0, contact["interforma"])
@@ -53,6 +60,7 @@ def show_contact_details(event):
 
         text_entry.delete(0, tk.END)
         text_entry.insert(0, contact["text"])
+
 
 # Функция для отображения информации о программе
 def show_about_info():
